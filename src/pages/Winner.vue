@@ -1,13 +1,16 @@
 <template>
     <div class="home">
-      <h1>Welcome to the Home Page</h1>
-      <p>This is a simple Vue 3 Home component.</p>
+      <WinnerSummary />
     </div>
   </template>
   
   <script>
+  import WinnerSummary from '@/components/WinnerSummary.vue';
   export default {
     name: 'Home-win',
+    components: {
+      WinnerSummary
+    }
   };
   </script>
   

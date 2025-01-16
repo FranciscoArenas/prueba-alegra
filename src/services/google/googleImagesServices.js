@@ -15,7 +15,7 @@ export const buscarImagenes = async (query) => {
         cx: CX,
         q: query,
         searchType: "image",
-        num: 10
+        num: 9
       }
     });
     return response.data.items;
