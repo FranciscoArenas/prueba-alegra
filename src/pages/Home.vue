@@ -24,9 +24,10 @@
 
         <div class="flex justify-center gap-4">
           <button
+            :disabled="isVoted(selectedImage)"
             @click="voteForImage"
-            class="bg-teal-500 text-white px-4 py-2 rounded-lg hover:bg-teal-600 transition">
-            Votar
+            class="text-white px-4 py-2 rounded-lg transition" :class="isVoted(selectedImage) ? 'bg-gray-500 hover:bg-gray-600' : 'bg-teal-500 hover:bg-teal-500'">
+            {{ isVoted(selectedImage) ? "Votado" : "Votar" }}
           </button>
           <button
             @click="closeModal"
@@ -53,12 +54,16 @@
     },
     data() {
       return {
+        votedImages: [],
         imagenes: [],
         sellers: [],
         selectedImage: null
       };
     },
     methods: {
+      isVoted(imagen) {
+        return this.votedImages.includes(imagen.link);
+      },
       handleSellersLoaded(sellers) {
         console.log(sellers);
         this.sellers = sellers;
@@ -82,6 +87,7 @@
         this.selectedImage = imagen;
       },
       async voteForImage() {
+        this.votedImages.push(this.selectedImage.link);
         const sellerId = this.selectedImage.sellerId;
         if (sellerId) {
           const data = JSON.parse(localStorage.getItem("sellerPoints")) || [];
