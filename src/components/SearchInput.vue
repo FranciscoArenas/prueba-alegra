@@ -29,6 +29,14 @@
       </div>
       <div class="flex py-6 gap-2 justify-center">
         <button
+          v-if="imagenes.length > 0"
+          @click="cargarMas"
+          class="bg-teal-500 text-white px-4 py-2 rounded-lg hover:bg-teal-600 transition">
+          Cargar Más
+        </button>
+      </div>
+      <div class="flex py-6 gap-2 justify-center">
+        <button
           class="recommendation-btn"
           @click="buscarRecomendacion('RTX')">
           RTX
@@ -57,18 +65,30 @@
     data() {
       return {
         query: "",
-        imagenes: []
+        imagenes: [],
+        startIndex: 1
       };
     },
     methods: {
       async buscar() {
         try {
-          const resultados = await buscarImagenes(this.query);
+          this.startIndex = 1;
+          const resultados = await buscarImagenes(this.query, this.startIndex);
           this.imagenes = Array.isArray(resultados) ? resultados : [];
           this.$emit("searchResults", this.imagenes);
         } catch (error) {
           console.error("Error al buscar imágenes:", error);
           this.imagenes = [];
+        }
+      },
+      async cargarMas() {
+        try {
+          this.startIndex += 10;
+          const resultados = await buscarImagenes(this.query, this.startIndex);
+          this.imagenes = [...this.imagenes, ...resultados]; 
+          this.$emit("searchResults", this.imagenes);
+        } catch (error) {
+          console.error("Error al cargar más imágenes:", error);
         }
       },
       buscarRecomendacion(termino) {

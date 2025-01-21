@@ -7,7 +7,7 @@ const googleImagesAPI = axios.create({
   baseURL: "https://www.googleapis.com/customsearch/v1"
 });
 
-export const buscarImagenes = async (query) => {
+export const buscarImagenes = async (query, start = 1) => {
   try {
     const response = await googleImagesAPI.get("", {
       params: {
@@ -15,7 +15,8 @@ export const buscarImagenes = async (query) => {
         cx: CX,
         q: query,
         searchType: "image",
-        num: 9
+        num: 9,
+        start
       }
     });
     return response.data.items;
